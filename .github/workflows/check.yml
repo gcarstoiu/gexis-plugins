@@ -1,0 +1,39 @@
+# The check on a pull request that lists a plugin (ADR-0168 in
+# gcarstoiu/gexis-player). pull_request_target runs this file and tools/ as
+# they are on main, never the pull request's: its files are only read, as
+# data, by tools/check.py. Read-only, no secrets.
+name: Check a listing
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: catalogue
+          fetch-depth: 0
+          persist-credentials: false
+      - name: The pull request, as data
+        working-directory: catalogue
+        env:
+          PR: ${{ github.event.pull_request.number }}
+        run: git fetch --no-tags origin "+refs/pull/${PR}/head:refs/remotes/pr/head"
+      - name: The player's commit
+        id: player
+        run: echo "ref=$(cat catalogue/tools/player-ref)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: gcarstoiu/gexis-player
+          ref: ${{ steps.player.outputs.ref }}
+          path: player
+          sparse-checkout: core/src/gexis_core
+          persist-credentials: false
+      - name: Check
+        env:
+          BASE: ${{ github.base_ref }}
+        run: python3 catalogue/tools/check.py --repo catalogue --base "origin/$BASE" --head refs/remotes/pr/head --player player/core/src

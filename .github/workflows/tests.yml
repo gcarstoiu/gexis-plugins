@@ -1,0 +1,30 @@
+# The catalogue's own tools, tested against the player's upload check at
+# the commit in tools/player-ref.
+name: Tests
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: The player's commit
+        id: player
+        run: echo "ref=$(cat tools/player-ref)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: gcarstoiu/gexis-player
+          ref: ${{ steps.player.outputs.ref }}
+          path: player
+          sparse-checkout: core/src/gexis_core
+          persist-credentials: false
+      - run: python3 -m venv /tmp/venv && /tmp/venv/bin/pip install --quiet pytest
+      - run: PYTHONPATH=tools:player/core/src /tmp/venv/bin/python -m pytest -q tools
+      - name: Every entry on main is valid
+        run: python3 tools/catalogue.py index plugins 1 > /dev/null
