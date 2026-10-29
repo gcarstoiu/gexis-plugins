@@ -1,0 +1,19 @@
+{
+  "id": "tone",
+  "name": "Tone (sample)",
+  "summary": "A sample renderer for plugin authors: its source button plays a quiet 440 Hz tone for 20 seconds.",
+  "kind": "renderer",
+  "author": "gcarstoiu",
+  "source": "https://github.com/gcarstoiu/gexis-sample-plugins",
+  "licence": "GPL-3.0-or-later",
+  "versions": [
+    {
+      "version": "0.1.0",
+      "url": "https://github.com/gcarstoiu/gexis-sample-plugins/releases/download/tone-0.1.0/tone-0.1.0.tar.gz",
+      "sha256": "6ca9b0b6087c7af53a631a4d2a97e15cccd30e2fbdb36565e1f05397242f608c",
+      "size": 1923,
+      "contract": 1,
+      "player": "1.0.0"
+    }
+  ]
+}
