@@ -114,3 +114,9 @@ current one.
   key; `--dry-run` builds and signs into `out/` only.
 - `tools/player-ref` - the commit of Gexis Player whose upload check runs.
 - Tests: `PYTHONPATH=tools:<gexis-player>/core/src python -m pytest tools`.
+
+## Licence
+
+This repository - its tools and the entries - is under the GNU General
+Public License, version 3 or later ([LICENSE](LICENSE)). A listed plugin
+keeps its own licence, the one its entry names.

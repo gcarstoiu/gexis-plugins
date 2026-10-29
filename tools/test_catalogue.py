@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Run with the player's core on the path:
 PYTHONPATH=<gexis-player>/core/src python -m pytest tools
 """

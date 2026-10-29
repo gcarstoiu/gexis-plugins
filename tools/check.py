@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """The check on a pull request that lists a plugin (ADR-0168).
 
     check.py --repo <checkout> --base <ref> --head <ref> --player <gexis-player's core/src>

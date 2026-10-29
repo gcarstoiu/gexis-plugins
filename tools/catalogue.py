@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """The catalogue's entries and its index (gcarstoiu/gexis-player, ADR-0168).
 
     catalogue.py validate plugins/<id>.json ...   check entries' form

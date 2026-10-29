@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-3.0-or-later
 # Publish the catalogue (ADR-0168 in gcarstoiu/gexis-player): catalogue.json
 # with a serial one past the published one, signed by the catalogue key,
 # uploaded with its signature to this repository's release `index`, then read
