@@ -161,3 +161,13 @@ def test_the_index_holds_every_entry_by_id_with_its_serial(tmp_path):
     assert [p["id"] for p in built["plugins"]] == ["alpha", "zeta"]
     with pytest.raises(ValueError):
         catalogue.index([], 0)
+
+
+def test_a_new_version_goes_after_the_listed_ones():
+    first = archive(MANIFEST)
+    second = archive({**MANIFEST, "version": "0.2.0"})
+    base = entry(version(first))
+    head = entry(version(second, "0.2.0"), version(first))
+    with pytest.raises(Invalid, match="oldest first"):
+        run(base, head, {head["versions"][0]["url"]: second})
+

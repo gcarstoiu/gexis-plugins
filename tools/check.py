@@ -62,6 +62,10 @@ def check_entry(path: str, base: dict | None, head: dict | None, *, fetch: Fetch
             changed = [k for k in catalogue.PINNED if before.get(k) != after.get(k)]
             if changed:
                 raise Invalid(f"{path}: version {version} is listed; {', '.join(changed)} cannot change")
+        # Players read the list's order as the versions' age: a new one goes last.
+        order = [v["version"] for v in head["versions"]]
+        if order[:len(old)] != list(old):
+            raise Invalid(f"{path}: new versions go after the listed ones, oldest first")
     for version, v in new.items():
         if version in old:
             continue

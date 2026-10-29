@@ -85,8 +85,8 @@ from the pull request is run.
 
 ## A new version
 
-Add it to `versions` in a pull request, leaving the earlier ones as they
-are. It is checked and read as the first one was; players offer it as an
+Add it at the end of `versions` in a pull request, leaving the earlier
+ones as they are: players read the order as the versions' age. It is checked and read as the first one was; players offer it as an
 update once it is published.
 
 ## Withdrawn and blocked
