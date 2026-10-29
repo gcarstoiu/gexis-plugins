@@ -1,0 +1,19 @@
+{
+  "id": "hello",
+  "name": "Hello (sample)",
+  "summary": "A sample service for plugin authors: writes to the player's log what its sandbox allows and refuses.",
+  "kind": "service",
+  "author": "gcarstoiu",
+  "source": "https://github.com/gcarstoiu/gexis-sample-plugins",
+  "licence": "GPL-3.0-or-later",
+  "versions": [
+    {
+      "version": "0.1.0",
+      "url": "https://github.com/gcarstoiu/gexis-sample-plugins/releases/download/hello-0.1.0/hello-0.1.0.tar.gz",
+      "sha256": "a9ac00705c4224b531a3990423b7c2371ed4037bae5d96b6a2acc137012fcde0",
+      "size": 1063,
+      "contract": 1,
+      "player": "1.0.0"
+    }
+  ]
+}
