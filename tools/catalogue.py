@@ -30,10 +30,14 @@ RESERVED = frozenset({
 #: What an archive may weigh (`gexis_core.uploads.MAX_BYTES`).
 MAX_BYTES = 200 * 1024 * 1024
 CONTRACTS = (1,)
-FIELDS = {"id", "name", "summary", "kind", "author", "source", "licence", "versions", "withdrawn", "blocked"}
-VERSION_FIELDS = {"version", "url", "sha256", "size", "contract", "player", "withdrawn", "blocked"}
+FIELDS = {"id", "name", "summary", "kind", "area", "author", "source", "licence", "versions", "withdrawn", "blocked"}
+VERSION_FIELDS = {"version", "url", "sha256", "size", "contract", "player", "permissions", "withdrawn", "blocked"}
+#: The Settings page a plugin's rows go to, as its plugin.json's `area`
+#: (Gexis Player's ADR-0169: *Add plugins* groups by it).
+AREAS = ("audio", "sources", "library", "handoff", "display", "enrichment", "device", "system")
+PERMISSION = re.compile(r"^[a-z][a-z0-9-]{0,30}$")
 #: What a version is, once listed: never changed afterwards.
-PINNED = ("version", "url", "sha256", "size", "contract", "player")
+PINNED = ("version", "url", "sha256", "size", "contract", "player", "permissions")
 FORMAT = 1
 
 
@@ -77,6 +81,8 @@ def validate(entry: object, filename: str | None = None) -> dict:
     _text(entry, "summary", 140, where)
     if entry.get("kind") not in KINDS:
         raise Invalid(f"{where}: 'kind' must be one of {KINDS}")
+    if "area" in entry and entry["area"] not in AREAS:
+        raise Invalid(f"{where}: 'area' must be one of {AREAS}")
     if not AUTHOR.match(str(entry.get("author", ""))):
         raise Invalid(f"{where}: 'author' must be a GitHub user name")
     source = _text(entry, "source", 200, where)
@@ -114,6 +120,10 @@ def validate(entry: object, filename: str | None = None) -> dict:
             raise Invalid(f"{at}: 'contract' must be one of {CONTRACTS}")
         if not RELEASE.match(str(v.get("player", ""))):
             raise Invalid(f"{at}: 'player' must be the lowest Gexis Player release it needs, such as 1.10.0")
+        perms = v.get("permissions", [])
+        if (not isinstance(perms, list) or not all(isinstance(p, str) and PERMISSION.match(p) for p in perms)
+                or len(set(perms)) != len(perms)):
+            raise Invalid(f"{at}: 'permissions' must list each permission its plugin.json asks for, once")
         _pulled(v, at)
     return entry
 

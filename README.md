@@ -48,7 +48,10 @@ The decision behind it is
    push again.
 5. **A person reads it**: the source at the release's tag against the
    summary, what it asks of the player, and a name that does not pass for
-   Gexis Player's own or someone else's product. The pull request is merged
+   Gexis Player's own or someone else's product. For a first listing, and
+   any version that adds a permission, the review note says what each
+   permission is used for and where in the code, and that nothing else uses
+   it: say so in the pull request. The pull request is merged
    after that reading, and the catalogue is published soon after.
 
 ## The fields
@@ -59,6 +62,7 @@ The decision behind it is
 | `name` | As in `plugin.json`; at most 40 characters. |
 | `summary` | One line on what it does, at most 140 characters, shown in *More plugins*. |
 | `kind` | `renderer` or `service`, as in `plugin.json`. |
+| `area` | Optional, as in `plugin.json`: the Settings page its rows go to, and its group under *Add plugins*. Absent: `sources` for a renderer, `system` for a service. |
 | `author` | Your GitHub user name. |
 | `source` | The plugin's public repository, `https://github.com/<owner>/<repo>`. |
 | `licence` | The plugin's licence, as an SPDX expression. |
@@ -68,6 +72,7 @@ The decision behind it is
 | `versions[].sha256`, `size` | The archive's SHA-256 (lower-case hex) and size in bytes, at most 200 MB. |
 | `versions[].contract` | The plugin contract it speaks: `1`. |
 | `versions[].player` | The lowest Gexis Player release it needs. |
+| `versions[].permissions` | What that version's `plugin.json` asks for beyond the sandbox (`cec`, `gpio`, `usb`), exactly; absent when it asks for none. Shown to the person before the download. |
 
 ## What the checks do
 
@@ -82,6 +87,16 @@ The decision behind it is
 
 The checks run this repository's own tools as they are on `main`; nothing
 from the pull request is run.
+
+## Permissions
+
+A plugin runs in the player's sandbox: its own temporary user, the system
+read-only, no devices (a renderer gets the sound cards). One that needs a
+device asks for it in its `plugin.json`'s `permissions`, from the list in
+*Writing a plugin*, section 3: `cec` (the TV's HDMI-CEC connection), `gpio`,
+`usb`. Each listed version names the same in its entry; the person adding the
+plugin sees them first, and the player grants exactly those. A version that
+asks for more than the one before is asked about again.
 
 ## A new version
 
