@@ -32,8 +32,10 @@ trap 'rm -rf "$work"' EXIT
 gpg --dearmor < keys/gexis-catalogue.asc > "$work/catalogue.gpg"
 verify() { gpgv --quiet --keyring "$work/catalogue.gpg" "$1.sig" "$1"; }
 
+# The published serial, in a dry run too: reading it changes nothing, and
+# the dry run then signs what a publish would.
 serial=0
-if [ "$DRY" = 0 ] && gh release view "$RELEASE" -R "$REPO" >/dev/null 2>&1; then
+if gh release view "$RELEASE" -R "$REPO" >/dev/null 2>&1; then
 	mkdir "$work/published"
 	gh release download "$RELEASE" -R "$REPO" -p catalogue.json -p catalogue.json.sig -D "$work/published"
 	verify "$work/published/catalogue.json"

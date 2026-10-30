@@ -111,7 +111,7 @@ current one.
 - `tools/catalogue.py` - an entry's form, and the index.
 - `tools/check.py` - the pull request's check (`.github/workflows/check.yml`).
 - `tools/publish.sh` - publishes after a merge, signed with the catalogue
-  key; `--dry-run` builds and signs into `out/` only.
+  key; `--dry-run` builds and signs the next serial into `out/` only.
 - `tools/player-ref` - the commit of Gexis Player whose upload check runs.
 - Tests: `PYTHONPATH=tools:<gexis-player>/core/src python -m pytest tools`.
 
