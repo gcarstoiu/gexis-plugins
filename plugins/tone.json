@@ -23,5 +23,6 @@
       "contract": 1,
       "player": "1.0.0"
     }
-  ]
+  ],
+  "blocked": "Blocked only to test blocking on a test player; it does no harm."
 }
