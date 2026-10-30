@@ -1,7 +1,7 @@
 # Gexis Player plugin catalogue
 
 The plugins by other authors that [Gexis Player](https://github.com/gcarstoiu/gexis-player)
-offers under **Settings → Plugins → More plugins**.
+offers under **Settings → Plugins → Add plugins**.
 
 **Listed means checked, not made or vouched for.** Every version passes the
 checks below and is read by a person before players can install it. A plugin
@@ -60,7 +60,7 @@ The decision behind it is
 |---|---|
 | `id` | The plugin's id, as in its `plugin.json`: a-z, 0-9 and `-`, starting with a letter, up to 31 characters. The file is named after it. The player's own ids, and any starting with `gexis`, are not available. |
 | `name` | As in `plugin.json`; at most 40 characters. |
-| `summary` | One line on what it does, at most 140 characters, shown in *More plugins*. |
+| `summary` | One line on what it does, at most 140 characters, shown in *Add plugins*. |
 | `kind` | `renderer` or `service`, as in `plugin.json`. |
 | `area` | Optional, as in `plugin.json`: the Settings page its rows go to, and its group under *Add plugins*. Absent: `sources` for a renderer, `system` for a service. |
 | `author` | Your GitHub user name. |
