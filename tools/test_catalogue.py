@@ -171,3 +171,32 @@ def test_a_new_version_goes_after_the_listed_ones():
     with pytest.raises(Invalid, match="oldest first"):
         run(base, head, {head["versions"][0]["url"]: second})
 
+
+
+def test_a_version_lists_exactly_the_permissions_its_plugin_asks_for():
+    data = archive({**MANIFEST, "permissions": ["cec"]})
+    listed = {**version(data), "permissions": ["cec"]}
+    done = run(None, entry(listed), {listed["url"]: data})
+    assert any("upload check passes" in line for line in done)
+    hidden = version(data)
+    with pytest.raises(Invalid, match="asks for"):
+        run(None, entry(hidden), {hidden["url"]: data})
+
+
+def test_a_listed_version_s_permissions_never_change():
+    data = archive({**MANIFEST, "permissions": ["cec"]})
+    listed = {**version(data), "permissions": ["cec"]}
+    base = entry(listed)
+    head = entry({**listed, "permissions": ["cec", "usb"]})
+    with pytest.raises(Invalid, match="cannot change"):
+        run(base, head, {})
+
+
+def test_the_area_is_the_manifest_s():
+    data = archive({**MANIFEST, "area": "library"})
+    head = {**entry(version(data)), "area": "library"}
+    run(None, head, {head["versions"][0]["url"]: data})
+    with pytest.raises(Invalid, match="area"):
+        run(None, entry(version(data)), {head["versions"][0]["url"]: data})
+    with pytest.raises(Invalid, match="'area' must be one of"):
+        catalogue.validate({**head, "area": "kitchen"}, "hello.json")

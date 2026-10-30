@@ -84,6 +84,14 @@ def check_entry(path: str, base: dict | None, head: dict | None, *, fetch: Fetch
                           ("version", version)):
             if manifest.get(key) != want:
                 raise Invalid(f"{path}: {version}: plugin.json says {key} {manifest.get(key)!r}, the entry {want!r}")
+        # What a player shows before the download must be what it installs.
+        if sorted(manifest.get("permissions") or []) != sorted(v.get("permissions", [])):
+            raise Invalid(f"{path}: {version}: plugin.json asks for {sorted(manifest.get('permissions') or [])}, "
+                          f"the entry lists {sorted(v.get('permissions', []))}")
+        default = "sources" if head["kind"] == "renderer" else "system"
+        if manifest.get("area", default) != head.get("area", default):
+            raise Invalid(f"{path}: {version}: plugin.json's area is {manifest.get('area', default)!r}, "
+                          f"the entry's {head.get('area', default)!r}")
         done.append(f"{path}: {version} downloaded, {len(archive)} bytes, sha256 matches, the player's upload check passes")
     return done
 
