@@ -15,5 +15,6 @@
       "contract": 1,
       "player": "1.0.0"
     }
-  ]
+  ],
+  "withdrawn": "A sample for plugin authors, not meant for players; its source stays on GitHub."
 }
