@@ -98,8 +98,8 @@ Each carries its reason, shown to the user.
 
 ## How the catalogue reaches players
 
-After a merge the catalogue is published as `catalogue.json` with its
-signature, on this repository's release
+After a merge the catalogue is published as `catalogue.json`, with its
+signature as `catalogue-<serial>.json.sig`, on this repository's release
 [`index`](https://github.com/gcarstoiu/gexis-plugins/releases/tag/index).
 Each publish carries a serial one higher than the last. A player checks the
 signature against the catalogue key it carries and refuses a serial lower

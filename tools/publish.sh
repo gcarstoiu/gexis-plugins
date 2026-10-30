@@ -4,6 +4,9 @@
 # with a serial one past the published one, signed by the catalogue key,
 # uploaded with its signature to this repository's release `index`, then read
 # back and verified. Run locally after a merge, on the maintainer's say-so.
+# The signature is named by the serial (catalogue-<serial>.json.sig) and
+# kept: GitHub's cache once served a new catalogue.json with the previous
+# signature, and a player reads the one its catalogue's serial names.
 #
 #   GEXIS_CATALOGUE_GNUPGHOME=<key folder> tools/publish.sh            publish
 #   GEXIS_CATALOGUE_GNUPGHOME=<key folder> tools/publish.sh --dry-run  build, sign and verify into ./out only
@@ -30,38 +33,42 @@ fi
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
 gpg --dearmor < keys/gexis-catalogue.asc > "$work/catalogue.gpg"
-verify() { gpgv --quiet --keyring "$work/catalogue.gpg" "$1.sig" "$1"; }
+sig() { echo "catalogue-$1.json.sig"; }
+verify() { gpgv --quiet --keyring "$work/catalogue.gpg" "$2" "$1"; }
+serial_of() { python3 -c 'import json, sys; print(json.load(open(sys.argv[1]))["serial"])' "$1"; }
 
 # The published serial, in a dry run too: reading it changes nothing, and
 # the dry run then signs what a publish would.
 serial=0
 if gh release view "$RELEASE" -R "$REPO" >/dev/null 2>&1; then
 	mkdir "$work/published"
-	gh release download "$RELEASE" -R "$REPO" -p catalogue.json -p catalogue.json.sig -D "$work/published"
-	verify "$work/published/catalogue.json"
-	serial=$(python3 -c 'import json, sys; print(json.load(open(sys.argv[1]))["serial"])' "$work/published/catalogue.json")
+	gh release download "$RELEASE" -R "$REPO" -p catalogue.json -D "$work/published"
+	serial=$(serial_of "$work/published/catalogue.json")
+	gh release download "$RELEASE" -R "$REPO" -p "$(sig "$serial")" -D "$work/published"
+	verify "$work/published/catalogue.json" "$work/published/$(sig "$serial")"
 fi
 
-python3 tools/catalogue.py index plugins $((serial + 1)) > "$work/catalogue.json"
+next=$((serial + 1))
+python3 tools/catalogue.py index plugins "$next" > "$work/catalogue.json"
 gpg --homedir "$GEXIS_CATALOGUE_GNUPGHOME" --batch --yes --local-user "$SIGNER" \
-	--detach-sign --output "$work/catalogue.json.sig" "$work/catalogue.json"
-verify "$work/catalogue.json"
-echo "catalogue.json: serial $((serial + 1)), $(python3 -c 'import json, sys; print(len(json.load(open(sys.argv[1]))["plugins"]))' "$work/catalogue.json") plugins, signature good"
+	--detach-sign --output "$work/$(sig "$next")" "$work/catalogue.json"
+verify "$work/catalogue.json" "$work/$(sig "$next")"
+echo "catalogue.json: serial $next, $(python3 -c 'import json, sys; print(len(json.load(open(sys.argv[1]))["plugins"]))' "$work/catalogue.json") plugins, signature good"
 
 if [ "$DRY" = 1 ]; then
-	mkdir -p out && cp "$work/catalogue.json" "$work/catalogue.json.sig" out/
+	mkdir -p out && cp "$work/catalogue.json" "$work/$(sig "$next")" out/
 	echo "dry run: out/catalogue.json and its signature; nothing uploaded"
 	exit 0
 fi
 
 gh release view "$RELEASE" -R "$REPO" >/dev/null 2>&1 ||
 	gh release create "$RELEASE" -R "$REPO" --title "Catalogue index" --latest=false \
-		--notes "catalogue.json and its signature, read by Gexis Player. Replaced on every publish."
-gh release upload "$RELEASE" -R "$REPO" --clobber "$work/catalogue.json" "$work/catalogue.json.sig"
+		--notes "catalogue.json, replaced on every publish, and each serial's signature, read by Gexis Player."
+gh release upload "$RELEASE" -R "$REPO" --clobber "$work/catalogue.json" "$work/$(sig "$next")"
 
 # GitHub's public URL is cached for minutes after an upload: read back through gh.
 mkdir "$work/back"
-gh release download "$RELEASE" -R "$REPO" -p catalogue.json -p catalogue.json.sig -D "$work/back"
-verify "$work/back/catalogue.json"
+gh release download "$RELEASE" -R "$REPO" -p catalogue.json -p "$(sig "$next")" -D "$work/back"
+verify "$work/back/catalogue.json" "$work/back/$(sig "$next")"
 cmp -s "$work/back/catalogue.json" "$work/catalogue.json" || { echo "read back differs" >&2; exit 1; }
-echo "published: serial $((serial + 1)), read back with a good signature"
+echo "published: serial $next, read back with a good signature"
