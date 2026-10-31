@@ -1,0 +1,20 @@
+{
+  "id": "tv-remote",
+  "name": "TV remote (HDMI-CEC)",
+  "summary": "The TV's own remote drives the player: arrows, OK and Back on its screen; play, pause and skip.",
+  "kind": "service",
+  "author": "gcarstoiu",
+  "source": "https://github.com/gcarstoiu/gexis-tv-remote",
+  "licence": "GPL-3.0-or-later",
+  "versions": [
+    {
+      "version": "0.1.1",
+      "url": "https://github.com/gcarstoiu/gexis-tv-remote/releases/download/v0.1.1/tv-remote-0.1.1.tar.gz",
+      "sha256": "4193846316ca989b358192aa88d8d196948bc1ac7add067e023fa043c1196abd",
+      "size": 4783,
+      "contract": 1,
+      "player": "1.10.0",
+      "permissions": ["cec"]
+    }
+  ]
+}
