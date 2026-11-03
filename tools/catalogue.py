@@ -24,8 +24,10 @@ AUTHOR = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$")
 SOURCE = re.compile(r"^https://github\.com/[A-Za-z0-9-]+/[A-Za-z0-9._-]+$")
 SPDX = re.compile(r"^[A-Za-z0-9.+-]+(?: (?:AND|OR|WITH) [A-Za-z0-9.+-]+)*$")
 #: The player's own plugins. Never listed, nor any id starting with "gexis".
+#: Beszel's agent and hub left the player for this catalogue (Gexis Player
+#: ADR-0174), their ids with them.
 RESERVED = frozenset({
-    "airplay", "beszel", "beszel-hub", "bluetooth", "lms", "lyrion-server", "plexamp", "spotify",
+    "airplay", "bluetooth", "lms", "lyrion-server", "plexamp", "spotify",
 })
 #: What an archive may weigh (`gexis_core.uploads.MAX_BYTES`).
 MAX_BYTES = 200 * 1024 * 1024
