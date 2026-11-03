@@ -1,0 +1,19 @@
+{
+  "id": "plexamp",
+  "name": "Plexamp",
+  "summary": "Plays your Plex library through the player, with the Plexamp app on your phone as the remote.",
+  "kind": "renderer",
+  "author": "gcarstoiu",
+  "source": "https://github.com/gcarstoiu/gexis-plexamp",
+  "licence": "GPL-3.0-or-later",
+  "versions": [
+    {
+      "version": "0.5.0",
+      "url": "https://github.com/gcarstoiu/gexis-plexamp/releases/download/v0.5.0/plexamp-0.5.0.tar.gz",
+      "sha256": "c7001f64cdff210f80eb81070b8d140a25b4f8c86627102ccb036a127bba67aa",
+      "size": 51309,
+      "contract": 1,
+      "player": "1.12.1"
+    }
+  ]
+}
