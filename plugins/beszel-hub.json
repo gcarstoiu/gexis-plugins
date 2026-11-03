@@ -1,0 +1,20 @@
+{
+  "id": "beszel-hub",
+  "name": "Beszel hub",
+  "summary": "A Beszel hub on the player: its own page showing how this player, and others that report to it, are doing.",
+  "kind": "service",
+  "area": "system",
+  "author": "gcarstoiu",
+  "source": "https://github.com/gcarstoiu/gexis-beszel",
+  "licence": "GPL-3.0-or-later AND MIT",
+  "versions": [
+    {
+      "version": "0.21.1-1",
+      "url": "https://github.com/gcarstoiu/gexis-beszel/releases/download/v0.21.1-1/beszel-hub-0.21.1-1.tar.gz",
+      "sha256": "23d0abec3f7869a539ba18376447ab97e0cec6c4c3ff0fcb40efd7f3e64b04ee",
+      "size": 12143983,
+      "contract": 1,
+      "player": "1.12.1"
+    }
+  ]
+}
