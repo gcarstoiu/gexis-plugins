@@ -1,0 +1,19 @@
+{
+  "id": "beszel",
+  "name": "Beszel",
+  "summary": "Reports how the player is doing - CPU, memory, temperature - to a Beszel hub elsewhere on your network.",
+  "kind": "service",
+  "author": "gcarstoiu",
+  "source": "https://github.com/gcarstoiu/gexis-beszel",
+  "licence": "GPL-3.0-or-later AND MIT",
+  "versions": [
+    {
+      "version": "0.21.1-1",
+      "url": "https://github.com/gcarstoiu/gexis-beszel/releases/download/v0.21.1-1/beszel-0.21.1-1.tar.gz",
+      "sha256": "08b5e04ff09b9a57815ed7f99350d7a563621cd58104f9b9af0f5210b8a9686d",
+      "size": 3967077,
+      "contract": 1,
+      "player": "1.12.1"
+    }
+  ]
+}
