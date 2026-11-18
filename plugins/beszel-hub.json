@@ -15,6 +15,14 @@
       "size": 12143983,
       "contract": 1,
       "player": "1.12.1"
+    },
+    {
+      "version": "0.21.2-1",
+      "url": "https://github.com/gcarstoiu/gexis-beszel/releases/download/v0.21.2-1/beszel-hub-0.21.2-1.tar.gz",
+      "sha256": "360d2d8a2158eb77d49d5976b0d14d4a920737bf348a4f71d6018ff16bc6dde0",
+      "size": 12187316,
+      "contract": 1,
+      "player": "1.12.1"
     }
   ]
 }
